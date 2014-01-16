@@ -100,14 +100,14 @@ describe TasksController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved task as @task" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Task).to receive(:save).and_return(false)
         post :create, {:task => @task_post_invalid}, valid_session
         expect(assigns(:task)).to be_a_new(Task)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Task).to receive(:save).and_return(false)
         post :create, {:task => @task_post_invalid}, valid_session
         expect(response).to render_template("new")
       end
@@ -142,14 +142,14 @@ describe TasksController do
     describe "with invalid params" do
       it "assigns the task as @task" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Task).to receive(:save).and_return(false)
         put :update, {:id => @task.to_param, :task => @invalid_attributes}, valid_session
         expect(assigns(:task)).to eq(@task)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Task.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Task).to receive(:save).and_return(false)
         put :update, {:id => @task.to_param, :task => @invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end

@@ -89,14 +89,14 @@ describe UserGamesController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved user_game as @user_game" do
         # Trigger the behavior that occurs when invalid params are submitted
-        UserGame.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(UserGame).to receive(:save).and_return(false)
         post :create, {game_id: "123"}, valid_session
         expect(assigns(:user_game)).to be_a_new(UserGame)
       end
 
       it "redirect the root template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        UserGame.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(UserGame).to receive(:save).and_return(false)
         post :create, {game_id: "123"}, valid_session
         expect(response).to redirect_to(root_path)
       end
@@ -131,14 +131,14 @@ describe UserGamesController do
     describe "with invalid params" do
       it "assigns the user_game as @user_game" do
         # Trigger the behavior that occurs when invalid params are submitted
-        UserGame.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(UserGame).to receive(:save).and_return(false)
         put :update, {:id => @user_game.to_param, :user_game => @invalid_attributes}, valid_session
         expect(assigns(:user_game)).to eq(@user_game)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        UserGame.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(UserGame).to receive(:save).and_return(false)
         put :update, {:id => @user_game.to_param, :user_game => @invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end

@@ -92,14 +92,14 @@ describe CodesController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved code as @code" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Code.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Code).to receive(:save).and_return(false)
         post :create, {:code => @code_post_invalid}, valid_session
         expect(assigns(:code)).to be_a_new(Code)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Code.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Code).to receive(:save).and_return(false)
         post :create, {:code => @code_post_invalid}, valid_session
         expect(response).to render_template("new")
       end
@@ -133,14 +133,14 @@ describe CodesController do
 
     describe "with invalid params" do
       it "assigns the code as @code" do
-        Code.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Code).to receive(:save).and_return(false)
         put :update, {:id => @code.to_param, :code => @invalid_attributes}, valid_session
         expect(assigns(:code)).to eq(@code)
       end
 
       it "re-renders the 'edit' template" do
 
-        Code.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Code).to receive(:save).and_return(false)
         put :update, {:id => @code.to_param, :code => @invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end

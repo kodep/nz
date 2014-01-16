@@ -105,14 +105,14 @@ describe HintsController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved hint as @hint" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Hint.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Hint).to receive(:save).and_return(false)
         post :create, {:hint => @hint_post_invalid}, valid_session
         expect(assigns(:hint)).to be_a_new(Hint)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Hint.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Hint).to receive(:save).and_return(false)
         post :create, {:hint => @hint_post_invalid}, valid_session
         expect(response).to render_template("new")
       end
@@ -148,7 +148,7 @@ describe HintsController do
     describe "with invalid params" do
       it "assigns the hint as @hint" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Hint.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Hint).to receive(:save).and_return(false)
         put :update, {:id => @hint.to_param, :hint => @invalid_attributes}, valid_session
         expect(assigns(:hint)).to eq(@hint)
       end
@@ -156,7 +156,7 @@ describe HintsController do
       it "re-renders the 'edit' template" do
         hint = Hint.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Hint.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Hint).to receive(:save).and_return(false)
         put :update, {:id => @hint.to_param, :hint => @invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end

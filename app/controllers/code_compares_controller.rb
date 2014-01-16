@@ -77,7 +77,7 @@ class CodeComparesController < ApplicationController
   protected
     def check_code_compare_creation
       unless params[:try_text] && params[:task]
-        @game_task = GameTask.where(task_id: params[:task].to_i).first
+        @game_task = GameTask.where(task_id: params[:task]).first
         redirect_to game_path(id: @game_task.game_id)
       end
     end

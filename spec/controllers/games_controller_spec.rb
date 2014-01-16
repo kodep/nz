@@ -92,14 +92,14 @@ describe GamesController do
     describe "with invalid params" do
       it "assigns a newly created but unsaved game as @game" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Game.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Game).to receive(:save).and_return(false)
         post :create, {:game => @invalid_attributes}, valid_session
         expect(assigns(:game)).to be_a_new(Game)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Game.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Game).to receive(:save).and_return(false)
         post :create, {:game => @invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -134,14 +134,14 @@ describe GamesController do
     describe "with invalid params" do
       it "assigns the game as @game" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Game.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Game).to receive(:save).and_return(false)
         put :update, {:id => @game.to_param, :game => @invalid_attributes}, valid_session
         expect(assigns(:game)).to eq(@game)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Game.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Game).to receive(:save).and_return(false)
         put :update, {:id => @game.to_param, :game => @invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
