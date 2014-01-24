@@ -1,0 +1,9 @@
+= form_tag "/code_compares/", method: "post"
+    .control-group
+      = label_tag "try_text", 'Try text', :class => 'control-label'
+      .controls
+        = text_field_tag "try_text", nil, :class => 'text_field'
+    .controls
+       = hidden_field_tag "task", :value => @task.id
+    .contrils
+       = submit_tag "Try"

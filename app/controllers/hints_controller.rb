@@ -1,9 +1,8 @@
 class HintsController < ApplicationController
-  before_filter :check_game, only: [:new]
-  before_filter :check_game_create, only: [:create]
+  before_filter :check_task, only: [:new]
+  before_filter :check_task_create, only: [:create]
   before_filter :no_hints, except: [:new, :create]
   before_action :set_hint, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :authorize_admin, only: [:show]
 
   # GET /hints
   # GET /hints.json
@@ -14,12 +13,17 @@ class HintsController < ApplicationController
   # GET /hints/1
   # GET /hints/1.json
   def show
+    @task = Task.find(@hint.task_hint.task_id)
   end
 
   # GET /hints/new
   def new
+    @task = params[:task].to_i
+    @cant_add = false
+    if TaskHint.where(task_id: @task).count == 2
+      redirect_to task_path(@task), notice: "Only two hints can be assigned with one task"
+    end
     @hint = Hint.new
-    @game = params[:game]
   end
 
   # GET /hints/1/edit
@@ -29,11 +33,11 @@ class HintsController < ApplicationController
   # POST /hints
   # POST /hints.json
   def create
+    task = params.require(:hint)[:task].to_i
     @hint = Hint.new(hint_params)
-    game = params.require(:hint)[:game].to_i
     respond_to do |format|
       if @hint.save
-        if GameHint.create(game_id: game, hint_id: @hint.id)
+        if TaskHint.create(task_id: task, hint_id: @hint.id)
           format.html { redirect_to @hint, notice: 'Hint was successfully created.' }
           format.json { render action: 'show', status: :created, location: @hint }
         end
@@ -81,15 +85,34 @@ class HintsController < ApplicationController
 
   protected
 
-    def check_game
-      unless params.require(:game)
+    def check_task
+      unless params.require(:task)
           redirect_to games_path
       end
+      if Task.find(params.require(:task).to_i).game.state != 0
+        redirect_to task_path(Task.find(params.require(:task).to_i)), notice: "You can't add new hints to tasks assigned with started or finished game"
+      end
+
     end
 
-    def check_game_create
-      unless params.require(:hint)
-        redirect_to games_path
+    def check_task_create
+      unless params.require(:hint)[:task]
+        redirect_to tasks_path
+      end
+      task = params.require(:hint)[:task].to_i
+      @task = Task.find(task)
+      if params.require(:hint)[:queue_number].to_i <= 0
+        redirect_to new_hint_path(task: @task.id), notice: "Parameter Queue number must be greater than 0"
+      end
+      if @task.hints.count > 0
+        #if (@task.hints.count == 1)
+        #  if @task.hints.first.queue_number == params.require(:hint)[:queue_number].to_i
+        #    redirect_to new_hint_path(task: @task.id), notice: "Parameter Queue number must be greater than" +  params.require(:hint)[:queue_number]
+        #  end
+        #els
+        if @task.hints.count >= 2
+          redirect_to task_path(@task), notice: "Only two hints can be assigned with one task"
+        end
       end
     end
 
